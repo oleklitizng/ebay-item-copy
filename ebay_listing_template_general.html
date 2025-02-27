@@ -1,0 +1,86 @@
+
+
+
+    <meta charset="UTF-8"> </meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> </meta>
+    <title>{title}</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .banner { width: 100%; max-width: 800px; height: auto; }
+        .logo { display: block; margin: 20px auto; max-width: 500px; }
+        .product-title { font-size: 24px; font-weight: bold; color: #1a5f7a; margin-bottom: 20px; }
+        .section { margin-bottom: 30px; border-bottom: 1px solid #e0e0e0; padding-bottom: 20px; }
+        .section:last-child { border-bottom: none; }
+        .section-title { font-size: 20px; font-weight: bold; color: #1a5f7a; margin-bottom: 10px; }
+        .price { font-size: 22px; color: #e63946; font-weight: bold; }
+        .important-notes, .shipping-info, .return-policy { background-color: #f8f9fa; padding: 15px; border-radius: 5px; }
+        ul { padding-left: 20px; }
+        .btn { display: inline-block; background-color: #1a5f7a; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; }
+        .btn:hover { background-color: #2a9d8f; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+
+
+    <img src="https://rs-syke.de/wp-content/uploads/2024/06/RS-Ihr-Autohaus-Banner.png" alt="RS Ihr Autohaus Banner" class="banner"> </img>
+    <img src="{{PICTURE_URL}}" alt="Product Image" style="max-width: 750px; width: 100%; height: auto;"> </img>
+
+
+<div class="product-title">
+  {{TITLE}}
+</div>
+
+<div class="section">
+  <div class="section-title">
+  Product Details
+  </div>
+
+  <div id="itemspecifics">
+    {{ITEMSPEZIFIKATIONEN}}
+  </div>
+
+  <div class="section-title">
+    Fitting Cars:
+    </div>
+    
+    <div id="itemspecifics">
+      {{KOMPATIBILITÄT}}
+    </div>
+</div>
+
+<div class="section important-notes">
+        <div class="section-title">Important Notes</div>
+        <ul>
+            <li>Please verify the compatibility and part numbers before purchasing.</li>
+            <li>Contact us if you have any questions about fitment or specifications.</li>
+            <li>The listed price includes VAT.</li>
+        </ul>
+    </div>
+    
+    <div class="section shipping-info">
+        <div class="section-title">Shipping Information</div>
+        <ul>
+            <li>Fast shipping: We dispatch within 1-2 business days after receiving payment.</li>
+            <li>Secure delivery: Items are shipped via a reliable courier service with tracking.</li>
+            <li>International shipping available: Contact us for rates to your location.</li>
+        </ul>
+    </div>
+    
+    <div class="section return-policy">
+        <div class="section-title">Returns &amp; Warranty</div>
+        <ul>
+            <li>30-day return guarantee for unused items in original packaging.</li>
+            <li>Full statutory warranty applies to all products.</li>
+            <li>For returns or warranty claims, please contact us for assistance.</li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <p>Thank you for considering our product. We strive to provide high-quality auto parts and excellent customer service.</p>
+        <p>If you have any questions, please don't hesitate to contact us.</p>
+        <a href="https://www.ebay.de/cnt/intermediatedFAQ?requested=rsihrautohaus" class="btn">Contact Us</a>
+    </div>
+
+
+
