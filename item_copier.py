@@ -44,21 +44,26 @@ def save_item_details(item_id, item_data):
     except Exception as e:
         print(f"Fehler beim Speichern der Datei: {e}")
 
-def extract_item_specific(item, keys):
-    """Extrahiert einen spezifischen Wert aus den Item-Specifics."""
-    if not item or not hasattr(item, 'ItemSpecifics'):
-        print(f"Keine Item-Specifics für {keys} gefunden!")
-        return None
-    
-    specifics = item.ItemSpecifics.NameValueList
-    for spec in specifics:
-        if spec.Name.lower() in keys:
-            return spec.Value  # Normalerweise ist Value eine Liste
-    
-    print(f"{keys} nicht gefunden!")
-    return None
+def extract_item_specific(source_item):
+    """Extrahiert Item-Specifics."""
+    item_specifics = []
 
-import html
+    if hasattr(source_item, 'ItemSpecifics') and hasattr(source_item.ItemSpecifics, 'NameValueList'):
+        for spec in source_item.ItemSpecifics.NameValueList:
+            # Escape für den Name-Wert
+            name = escape_xml(spec.Name)
+
+            # Verarbeitung des Values, wenn es eine Liste ist oder ein einzelner Wert
+            if isinstance(spec.Value, list):
+                # Escape für jedes Element in der Liste
+                value = [escape_xml(v) for v in spec.Value]
+            else:
+                # Escape für den Einzelwert
+                value = escape_xml(spec.Value)
+
+            # Hinzufügen der verarbeiteten Werte zur item_specifics-Liste
+            item_specifics.append({'Name': name, 'Value': value})
+    return item_specifics
 
 def extract_compatibility_list(item):
     """Extrahiert die Fahrzeugkompatibilitätsliste aus ItemCompatibilityList."""
@@ -279,7 +284,6 @@ def get_shipping_profile(weight):
             'ShippingProfileName': 'DHL/DPD/5-10kg/120x6x60'
         }
 
-import time
 def escape_xml(text):
     text = text.replace('&', '&amp;')
     text = text.replace('<', '&lt;')
@@ -345,23 +349,7 @@ def create_new_item_draft(source_item_id, start_price=None, quantity=None, SKU=N
     
     
     # ItemSpecifics extrahieren
-    item_specifics = []
-
-    if hasattr(source_item, 'ItemSpecifics') and hasattr(source_item.ItemSpecifics, 'NameValueList'):
-        for spec in source_item.ItemSpecifics.NameValueList:
-            # Escape für den Name-Wert
-            name = escape_xml(spec.Name)
-
-            # Verarbeitung des Values, wenn es eine Liste ist oder ein einzelner Wert
-            if isinstance(spec.Value, list):
-                # Escape für jedes Element in der Liste
-                value = [escape_xml(v) for v in spec.Value]
-            else:
-                # Escape für den Einzelwert
-                value = escape_xml(spec.Value)
-
-            # Hinzufügen der verarbeiteten Werte zur item_specifics-Liste
-            item_specifics.append({'Name': name, 'Value': value})
+    item_specifics = extract_item_specific(source_item)
 
     #item_compatibility_list = extract_compatibility_list(source_item) 
     #print(item_compatibility_list)
@@ -475,23 +463,8 @@ def revise_item(item_id, source_item_id, start_price=None, quantity=None, SKU=No
     final_quantity = quantity if quantity is not None else int(existing_item.Quantity)
     final_sku = SKU if SKU is not None else existing_item.SKU if hasattr(existing_item, 'SKU') else None
     
-    item_specifics = []
-    # ItemSpecifics aus dem Quellartikel extrahieren
-    if hasattr(source_item, 'ItemSpecifics') and hasattr(source_item.ItemSpecifics, 'NameValueList'):
-        for spec in source_item.ItemSpecifics.NameValueList:
-            # Escape für den Name-Wert
-            name = escape_xml(spec.Name)
-
-            # Verarbeitung des Values, wenn es eine Liste ist oder ein einzelner Wert
-            if isinstance(spec.Value, list):
-                # Escape für jedes Element in der Liste
-                value = [escape_xml(v) for v in spec.Value]
-            else:
-                # Escape für den Einzelwert
-                value = escape_xml(spec.Value)
-
-            # Hinzufügen der verarbeiteten Werte zur item_specifics-Liste
-            item_specifics.append({'Name': name, 'Value': value})
+    # ItemSpecifics extrahieren
+    item_specifics = extract_item_specific(source_item)
 
     # Benutzer nach Gewicht fragen
     weight = input("Bitte geben Sie das Gewicht des Artikels in kg ein: ")
